@@ -1,0 +1,47 @@
+@import url("variables.less");
+@import url("mixins.less");
+@import url("elements.less");
+
+body {
+  .gradient(@background, @background-accent, @background);
+  color: white;
+  min-height:2000px;
+}
+
+#map-wrapper {
+  margin-left: 15%;
+}
+
+#map {
+  margin:0;
+  padding:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:left;
+  position:absolute;
+  height:500px;
+  width:auto;
+}
+#map img{
+  height:500px;
+}
+#map h1 {
+  position:absolute;
+  top:50px;
+  left: 0;
+  right: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 150px;
+}
+
+#map p {
+  top:50px;
+  left: 0;
+  right: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  position:absolute;
+  max-width: 150px;
+}
