@@ -3,8 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <title>Our Africa Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script>window.$ = window.jQuery = require('../bower_components/jquery/dist/jquery.js');</script>
+    <script src="../bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
     <script src="../bower_components/angular/angular.min.js"></script>
     <script src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <!--Blues Clues-->
@@ -26,16 +28,22 @@
     <center>
       <div id="map-wrapper">
         <div id="map" class="map">
-          <img height="500px" src="https://upload.wikimedia.org/wikipedia/commons/2/2e/ContinentAfrica.svg"/>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/ContinentAfrica.svg"/>
           <center>
-            <h1 id="title" class="title">Here is this Information</h1>
+            <div id="title" class="title">
+              <h1>Africa, the rise of a continent</h1>
+              <h3>By: Aislynn Hocevar, Rylee McCrory, Nick Ribic, Kirk Brauer</h3>
+            </div>
           </center>
-          <p id="info-test" style="top: 170px;left: 350px;opacity:0">
-            Very important information
-          </p>
         </div>
       </div>
     </center>
+    <div id="view-container">
+      <div ui-view id="ui-view"></div>
+    </div>
+    <p style="position:absolute;top:740px;">
+      Hello this is a cool element test
+    </p>
     <script src="./js/scroll.js"></script>
   </body>
 </html>
