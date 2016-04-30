@@ -13,6 +13,7 @@
     "gulp-less": "*"
   },
   "dependencies": {
-    "gulp-jslint": "^0.2.2"
+    "gulp-jslint": "^0.2.2",
+    "gulp-run": "^1.6.12"
   }
 }

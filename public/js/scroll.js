@@ -14,23 +14,6 @@ controller.scrollTo(function(target) {
 
 });
 
-$(document).on("click", "a[href^=#]", function(e) {
-  var id = $(this).attr("href");
-
-  if($(id).length > 0) {
-    e.preventDefault();
-
-    // trigger scroll
-    controller.scrollTo(id);
-
-    // If supported by the browser we can also update the URL
-    if (window.history && window.history.pushState) {
-      history.pushState("", document.title, id);
-    }
-  }
-
-});
-
 //Template:
 // {duration, offset, reverse, triggerelement, tween, pinelement, lockscroll}
 
@@ -45,7 +28,7 @@ var show_content = new TimelineMax()
 //Controller for scroll locking
 scrolllock = false;
 var locked = false;
-$('body').on({
+/*$('body').on({
     'mousewheel': function(e) {
       if (e.originalEvent.wheelDelta >= 0) {
         //Scroll Up
@@ -58,19 +41,55 @@ $('body').on({
         }
       }
     }
-})
+})*/
 // Pin continent for whole Duration
 new $.ScrollMagic.Scene({
-        duration: 1400,  // the scene should last for a scroll distance of 100px
+        duration: 1000,  // the scene should last for a scroll distance of 100px
         offset: 0,
       })
       .setPin("#map-wrapper", {pushFollowers: false})
       .addIndicators("Pin")
       .addTo(controller); // assign the scene to the controller
 
+new $.ScrollMagic.Scene({ duration: 100,offset: 25
+      })
+      .setTween(".title", {opacity: 0})
+      .addIndicators()
+      .addTo(controller); // assign the scene to the controller
+
+var fadetitle = new TimelineMax()
+  .staggerTo("#africa-people", 1 , {opacity: 1})
+  .staggerTo("#africa-people", 1 , {opacity: 0});
+
+new $.ScrollMagic.Scene({ duration: 100,offset: 125
+      })
+      .setTween(fadetitle)
+      .addIndicators()
+      .addTo(controller); // assign the scene to the controller
+
+var fadetitle_1 = new TimelineMax()
+    .staggerTo("#africa-country", 1 , {opacity: 1})
+    .staggerTo("#africa-country", 1 , {opacity: 0});
+
+new $.ScrollMagic.Scene({ duration: 100,offset: 225
+      })
+      .setTween(fadetitle_1)
+      .addIndicators()
+      .addTo(controller); // assign the scene to the controller
+
+var fadetitle_2 = new TimelineMax()
+      .staggerTo("#africa-mile", 1 , {opacity: 1})
+      .staggerTo("#africa-mile", 1 , {opacity: 0});
+
+new $.ScrollMagic.Scene({ duration: 100,offset: 325
+      })
+      .setTween(fadetitle_2)
+      .addIndicators()
+      .addTo(controller); // assign the scene to the controller
+
 new $.ScrollMagic.Scene({
-        duration: 500,  // the scene should last for a scroll distance of 100px
-        offset: 50,
+        duration: 300,  // the scene should last for a scroll distance of 100px
+        offset: 250,
         reverse: true
       })
       .setTween(".map", {scale: 2.5, left: -500, top: 250, ease: Expo.easeIn})
@@ -92,27 +111,11 @@ new $.ScrollMagic.Scene({
     .addIndicators()
     .addTo(controller); // assign the scene to the controller
 
-new $.ScrollMagic.Scene({
+    new $.ScrollMagic.Scene({
           duration: 10,  // the scene should last for a scroll distance of 100px
-          offset: 670,
+          offset: 540,
           reverse: true
-          })
-          .setTween(hide_content)
-          .addIndicators()
-          .addTo(controller); // assign the scene to the controller
-
-new $.ScrollMagic.Scene({
-        duration: 500,  // the scene should last for a scroll distance of 100px
-        offset: 700,
-        reverse: true
-      })
-      .setTween(".map", {scale: 1.0, left: 0, top: 0})
-      .addIndicators()
-      .addTo(controller); // assign the scene to the controller
-
-
-new $.ScrollMagic.Scene({ duration: 200,offset: 25
-            })
-            .setTween(".title", {opacity: 0})
-            .addIndicators()
-            .addTo(controller); // assign the scene to the controller
+        })
+        .setTween(".navbar", {opacity: 1})
+        .addIndicators()
+        .addTo(controller); // assign the scene to the controller

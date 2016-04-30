@@ -6,11 +6,15 @@
 body {
   .radial-gradient(center, center, circle, contain, @background, 0, black, 100%);
   color: white;
-  min-height:2000px;
+  min-height:1000px;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: Futurafrica;
+}
+
+h2 {
+  font-size: 25px;
 }
 
 p {
@@ -74,4 +78,108 @@ p {
     height:100%;
     width:100%;
   }
+}
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 4;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: inline-block;
+  float: right;
+}
+
+.rounded-button {
+  float: right;
+  margin-top: 15px;
+  height: 50px;
+  width: 150px;
+  border:2.5px solid #FFFFFF;
+  border-radius: 30px;
+  text-align:center;
+  cursor:pointer;
+	color:#FFFFFF;
+  float:left;
+  margin-left: 10px;
+  margin-right: 10px;
+  .transition-duration(0.1s);
+  .scale(1.0);
+  .display {
+  display:block;
+	width:100%;
+	padding-top:15%;
+  padding-bottom:15%;
+	line-height:1em;
+	margin-top:-0.5em;
+	text-align:center;
+	color:#FFFFFF;
+    font-size:1.2em;
+  }
+}
+
+.rounded-button:hover {
+  .transition-duration(0.1s);
+  .scale(1.1);
+}
+
+.floating-title {
+  position: fixed;
+  top:40%;
+  z-index: 3;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 4;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: inline-block;
+}
+
+.circle-button {
+  margin-top: 20px;
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+	border:2.5px solid #FFFFFF;
+  float:left;
+  margin-left: 10px;
+  margin-right: 10px;
+  overflow:hidden;
+  cursor:pointer;
+  .transition-duration(0.1s);
+  .scale(1.0);
+  .display {
+    display:block;
+	width:100%;
+	padding-top:50%;
+  padding-bottom:50%;
+	line-height:1em;
+	margin-top:-0.5em;
+	text-align:center;
+	color:#FFFFFF;
+    font-size:1.0em;
+  }
+}
+
+.circle-button:hover {
+  .transition-duration(0.1s);
+  .scale(1.2);
 }

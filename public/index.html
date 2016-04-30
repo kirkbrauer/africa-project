@@ -38,12 +38,31 @@
         </div>
       </div>
     </center>
+    <div class="top-bar row navbar" ng-controller="NavCtrl" style="opacity: 0">
+      <div class="rounded-button">
+        <div class="display">
+          <span class="glyphicon glyphicon-play"></span>Start Simulation
+        </div>
+      </div>
+      <div class="rounded-button">
+        <div class="display">
+          Desertification
+        </div>
+      </div>
+    </div>
+    <h1 class="floating-title" id="africa-people" style="opacity:0;">1.111 billion People Currently live in Africa</h1>
+    <h1 class="floating-title" id="africa-country" style="opacity:0;">54 Countries</h1>
+    <h1 class="floating-title" id="africa-mile" style="opacity:0;">Over 30 million square miles</h1>
+    <div class="bottom-bar row navbar" ng-controller="NavCtrl" style="opacity: 0">
+      <div class="circle-button" ng-repeat="item in buttons">
+        <div class="display" style="margin-top:-1.0em" ng-click="openpage('{{item.page}}')">
+          {{item.name}}
+        </div>
+      </div>
+    </div>
     <div id="view-container">
       <div ui-view id="ui-view"></div>
     </div>
-    <p style="position:absolute;top:740px;">
-      Hello this is a cool element test
-    </p>
     <script src="./js/scroll.js"></script>
   </body>
 </html>
