@@ -8,12 +8,13 @@
   },
   "author": "Kirk Bruaer",
   "devDependencies": {
-    "electron-prebuilt": "^0.37.0",
-    "gulp-electron": "^0.1.1",
-    "gulp-less": "*"
+    "gulp-less": "*",
+    "gulp-nodemon": "^2.0.6"
   },
   "dependencies": {
     "gulp-jslint": "^0.2.2",
-    "gulp-run": "^1.6.12"
+    "gulp-run": "^1.6.12",
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
   }
 }

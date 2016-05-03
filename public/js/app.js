@@ -9,17 +9,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
         // HOME STATES AND NESTED VIEWS ========================================
         .state('people', {
             url: '/people',
-            templateUrl: 'templates/people.html'
+            templateUrl: '/public/templates/people.html'
         })
 
         .state('colonization', {
             url: '/colonization',
-            templateUrl: 'templates/colonization.html'
+            templateUrl: '/public/templates/colonization.html'
         })
 
         .state('simulation', {
             url: '/sim',
-            templateUrl: 'templates/sim.html',
+            templateUrl: '/public/templates/sim.html',
             controller: "SimCtrl"
         })
 
@@ -27,49 +27,49 @@ app.config(function($stateProvider, $urlRouterProvider) {
           name: 'background',
           url: '/sim-background',
           nextstate: 'simulation.intro',
-          templateUrl: 'templates/sim.background.html'
+          templateUrl: '/public/templates/sim.background.html'
         })
 
         .state('simulation.intro', {
           name: 'intro',
           url: '/sim-intro',
-          templateUrl: 'templates/sim.intro.html'
+          templateUrl: '/public/templates/sim.intro.html'
         })
 
         .state('simulation.waiting', {
           name: 'waiting',
           url: '/sim-wait',
-          templateUrl: 'templates/sim.waiting.html'
+          templateUrl: '/public/templates/sim.waiting.html'
         })
 
         .state('simulation.hutu', {
           name: 'hutu',
           url: '/sim-hutu',
-          templateUrl: 'templates/sim.hutu.html'
+          templateUrl: '/public/templates/sim.hutu.html'
         })
 
         .state('simulation.tutsi', {
           name: 'tutsi',
           url: '/sim-tutsi',
-          templateUrl: 'templates/sim.tutsi.html'
+          templateUrl: '/public/templates/sim.tutsi.html'
         })
 
         .state('simulation.option', {
           name: 'option',
           url: '/sim-option',
-          templateUrl: 'templates/sim.option.html'
+          templateUrl: '/public/templates/sim.option.html'
         })
 
         .state('simulation.dead', {
           name: 'dead',
           url: '/sim-dead',
-          templateUrl: 'templates/sim.dead.html'
+          templateUrl: '/public/templates/sim.dead.html'
         })
 
         .state('simulation.end', {
           name: 'end',
           url: '/sim-end',
-          templateUrl: 'templates/sim.end.html'
+          templateUrl: '/public/templates/sim.end.html'
         })
 
 })
@@ -127,6 +127,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
         socket.on('useradded', function (data) {
           console.log(data.name);
           $scope.groupmembers.push(data.name);
+          $scope.$apply();
+        });
+        socket.on('userremoved', function (data) {
+          $scope.groupmembers =  data.users;
           $scope.$apply();
         });
       });
