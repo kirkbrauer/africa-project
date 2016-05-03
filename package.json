@@ -4,7 +4,8 @@
   "description": "Our Project for the Cold war in Africa",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "author": "Kirk Bruaer",
   "devDependencies": {
@@ -13,6 +14,7 @@
   },
   "dependencies": {
     "basic-auth": "^1.0.3",
+    "bower": "^1.7.9",
     "express": "^4.13.4",
     "gulp-jslint": "^0.2.2",
     "gulp-run": "^1.6.12",
