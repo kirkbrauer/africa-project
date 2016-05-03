@@ -79,8 +79,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 })
 
 .controller("SimCtrl", function ($scope, $state) {
-  //var socket = io('https://africa-project.herokuapp.com');
-  var socket = io('http://localhost:8080');
+  var socket = io('https://africa-project.herokuapp.com');
+  //var socket = io('http://localhost:8080');
   socket.on('connect', function () {
     console.log("Connected to server");
     sessionid = socket.io.engine.id;
@@ -97,6 +97,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
   });
   $scope.alive = true;
   $scope.role;
+  $scope.groupid;
   $scope.groupmembers = ["Test User"];
   $scope.user = {
     group: "",
@@ -109,9 +110,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
     }
     $state.go($state.current.nextstate);
   };
-  socket.on('news', function (data) {
-    console.log(data);
-  });
   $scope.startsim = function (user) {
     console.log(user.group);
     if (!user.group) {
@@ -120,8 +118,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
       socket.emit('join_group', { clientid: sessionid, groupid: user.group, name: user.name });
       socket.on('group_joined', function (data) {
         console.log("Joined Group");
-        $scope.role = data.role;
-        console.log(data.users);
+        $scope.groupid = data.groupid;
         $scope.groupmembers = data.users;
         $state.go('simulation.waiting');
         socket.on('useradded', function (data) {
@@ -136,6 +133,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
       });
     }
   };
+  $scope.ready = function (groupid) {
+    console.log(groupid);
+    socket.emit('ready', { groupid: groupid });
+  };
+  socket.on('ready', function (data) {
+    console.log(data.role);
+    if (data.role === "Hutu") {
+      $state.go('simulation.hutu');
+    } else {
+      $state.go('simulation.tutsi');
+    }
+  });
 })
 
 .controller("NavCtrl", function ($scope, $state) {

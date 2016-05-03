@@ -1,5 +1,10 @@
 <h3>Please Wait while other members join the simulation...</h3>
 <h2>Members in your Group:</h2>
+<div class="rounded-button" style="width:100px;margin-top: -45px;margin-right:12px;float:right;" ng-click="ready(groupid)">
+  <div class="display" style="margin-top:0;">
+    Ready
+  </div>
+</div>
 <ul>
   <li ng-repeat="user in groupmembers">
     {{user}}

@@ -16,6 +16,7 @@ server.listen(port);
 if (debug) console.log("Listening on " + port);
 
 var groups = {};
+var groupkey = {};
 
 function stringGen(len) {
     var text = "";
@@ -26,6 +27,10 @@ function stringGen(len) {
         text += charset.charAt(Math.floor(Math.random() * charset.length));
 
     return text;
+}
+
+function chooseSide() {
+    return (Math.floor(Math.random() * 2) == 0) ? 'Tutsi' : 'Hutu';
 }
 
 function users (groupid) {
@@ -57,11 +62,19 @@ io.on('connection', function (socket) {
     //console.log(stringGen(6));
     if (!groups[data.groupid]) {
       groups[data.groupid] = {};
+      groupkey[data.groupid] = { ready: false, role: "None" };
     } else {
       io.to(data.groupid).emit('useradded', { name: data.name });
     }
-    groups[data.groupid][data.clientid] = { id: data.clientid, alive: true, role: undefined, name: data.name };
+    groups[data.groupid][data.clientid] = { id: data.clientid, alive: true, name: data.name };
     socket.join(data.groupid);
-    socket.emit('group_joined', { role: "NaN", users: users(data.groupid) });
+    socket.emit('group_joined', { users: users(data.groupid), groupid: data.groupid });
+  });
+  socket.on('ready', function (data) {
+    if (debug) console.log(data.groupid + " Ready");
+    if (!groupkey[data.groupid].ready) {
+      groupkey[data.groupid].ready = true;
+      io.to(data.groupid).emit('ready', { role: chooseSide() });
+    }
   });
 });
