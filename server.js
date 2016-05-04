@@ -53,7 +53,12 @@ io.on('connection', function (socket) {
     for (var group in groups) {
       if (groups[group][socket.id.substring(2)]) {
         delete groups[group][socket.id.substring(2)];
-        io.to(group).emit('userremoved', { users: users(group) });
+        if (users(group).length === 0) {
+          delete groups[group];
+          delete groupkey[group];
+        } else {
+          io.to(group).emit('userremoved', { users: users(group) });
+        }
       }
     }
   });
@@ -64,15 +69,21 @@ io.on('connection', function (socket) {
       groups[data.groupid] = {};
       groupkey[data.groupid] = { ready: false, role: "None" };
     } else {
-      io.to(data.groupid).emit('useradded', { name: data.name });
+      if (!groupkey[data.groupid].ready) {
+        io.to(data.groupid).emit('useradded', { name: data.name });
+      }
     }
-    groups[data.groupid][data.clientid] = { id: data.clientid, alive: true, name: data.name };
-    socket.join(data.groupid);
-    socket.emit('group_joined', { users: users(data.groupid), groupid: data.groupid });
+    if (groupkey[data.groupid].ready) {
+      socket.emit('group_joined', { error: "You cannot join while the simulation is running!" });
+    } else {
+      groups[data.groupid][data.clientid] = { id: data.clientid, alive: true, name: data.name };
+      socket.join(data.groupid);
+      socket.emit('group_joined', { users: users(data.groupid), groupid: data.groupid });
+    }
   });
   socket.on('ready', function (data) {
     if (debug) console.log(data.groupid + " Ready");
-    if (!groupkey[data.groupid].ready) {
+    if (groupkey[data.groupid].ready === false) {
       groupkey[data.groupid].ready = true;
       io.to(data.groupid).emit('ready', { role: chooseSide() });
     }

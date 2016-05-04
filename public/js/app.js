@@ -79,18 +79,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 })
 
 .controller("SimCtrl", function ($scope, $state) {
-  var socket = io('https://africa-project.herokuapp.com');
-  //var socket = io('http://localhost:8080');
+  socket = io('https://africa-project.herokuapp.com');
+  //socket = io('http://localhost:8080');
   socket.on('connect', function () {
     console.log("Connected to server");
     sessionid = socket.io.engine.id;
     console.log(sessionid);
-    setInterval( function() {
+    conn_check = setInterval( function() {
       socket.emit('conn_check', { data: 'test' });
     }, 1000);
-    socket.on('conn_check', function (data) {
-      console.log("Checked");
-    });
+  });
+  socket.on('conn_check', function (data) {
+    console.log("Checked");
   });
   socket.on('connect_error', function () {
     alert("Error connecting to the server");
@@ -98,7 +98,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
   $scope.alive = true;
   $scope.role;
   $scope.groupid;
-  $scope.groupmembers = ["Test User"];
+  $scope.groupmembers = [];
   $scope.user = {
     group: "",
     name: ""
@@ -116,23 +116,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
       alert("You must enter a group number")
     } else {
       socket.emit('join_group', { clientid: sessionid, groupid: user.group, name: user.name });
-      socket.on('group_joined', function (data) {
-        console.log("Joined Group");
-        $scope.groupid = data.groupid;
-        $scope.groupmembers = data.users;
-        $state.go('simulation.waiting');
-        socket.on('useradded', function (data) {
-          console.log(data.name);
-          $scope.groupmembers.push(data.name);
-          $scope.$apply();
-        });
-        socket.on('userremoved', function (data) {
-          $scope.groupmembers =  data.users;
-          $scope.$apply();
-        });
-      });
     }
   };
+  socket.on('group_joined', function (data) {
+    if (data.error) {
+      alert(data.error);
+    } else {
+      console.log("Joined Group");
+      $scope.groupid = data.groupid;
+      $scope.groupmembers = data.users;
+      $state.go('simulation.waiting');
+    }
+  });
+  socket.on('useradded', function (data) {
+    console.log(data.name);
+    $scope.groupmembers.push(data.name);
+    $scope.$apply();
+  });
+  socket.on('userremoved', function (data) {
+    $scope.groupmembers =  data.users;
+    $scope.$apply();
+  });
   $scope.ready = function (groupid) {
     console.log(groupid);
     socket.emit('ready', { groupid: groupid });
@@ -168,6 +172,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
       $state.go('simulation.background');
     } else {
       $scope.simstatus = "Start Simulation";
+      $scope.alive = true;
+      $scope.role;
+      $scope.groupid;
+      $scope.groupmembers = [];
+      $scope.user = {
+        group: "",
+        name: ""
+      };
+      if (socket) {
+        socket.disconnect();
+      }
       $state.go('people');
     }
   };
