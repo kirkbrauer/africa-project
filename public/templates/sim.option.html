@@ -1,0 +1,6 @@
+<h3>{{question.question}}</h3>
+<ul style="list-style-type:none">
+  <li ng-repeat="option in options" style="font-size:18px;padding-bottom:10px;cursor:pointer;" ng-click="select($index)">
+    {{option}}
+  </li>
+</ul>
