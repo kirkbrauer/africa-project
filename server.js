@@ -23,6 +23,10 @@ var groupok = 0;
 var tutsis = 0;
 var hutus = 0;
 var votes = 0;
+var votetimer;
+var votedata = [];
+var timercount = 30;
+var currentquestion = {};
 
 function stringGen(len) {
     var text = "";
@@ -104,7 +108,18 @@ io.on('connection', function (socket) {
       io.to(data.groupid).emit('ready', { role: role });
     }
   });
-  socket.on('startsim', function () {
+  function emitto (role, message, data) {
+    //Set the current question
+    if (role === "Hutu" && message === "question") {
+      currentquestion["Hutu"] = data;
+    }
+    for (var group in groupkey) {
+      if (groupkey[group].role === role) {
+        io.to(group).emit(message, data);
+      }
+    }
+  }
+  function getgroupnumbers () {
     groupnum = 0;
     groupok = 0;
     tutsis = 0;
@@ -124,31 +139,30 @@ io.on('connection', function (socket) {
         groupok++;
       }
     }
-    if (groupnum === groupok) {
+  }
+  var waiting = { type:"Waiting", id:-1, question: "Waiting for response...", answers:[] };
+  socket.on('startsim', function () {
+    getgroupnumbers();
+    if (groupnum === groupok && tutsis != 0 && hutus != 0) {
       if (debug) console.log("Simulation Started");
       if (debug) console.log("Tutsis "+tutsis);
       if (debug) console.log("Hutus "+hutus);
       socket.broadcast.emit('startsim');
+      emitto("Hutu", "question", hutuquestions[0]);
+      emitto("Tutsi", "question", waiting);
       questionnum = 0;
     } else {
       socket.emit('notready');
     }
   });
-  var waiting = { type:"Waiting", id:-1, question: "Waiting for response...", answers:[] };
   var hutuquestions = [
-    { type: "First", id:0, question: "Your people have deemed the Tutsis the cause of all problems in Rwanda. How would you like to exterminate them?", answers: ["Hire militas to storm peoples houses and murder them","Have militias set up roadblocks and kill them with machetes"] },
+    { type: "First", id:0, question: "Your people have deemed the Tutsis the cause of all problems in Rwanda. How would you like to exterminate them?", answers: [{answer: "Hire militas to storm peoples houses and murder them", send: 0}, {answer: "Have militias set up roadblocks and kill them with machetes", send: 1}] },
     { type: "First", id:1, question: "Second Question!", answers: ["Hire militas to storm peoples houses and murder them","Have militias set up roadblocks and kill them with machetes"] }
   ];
   var tutsiquestions = [
-    { type:"First", id:0, question: "Test Question", answers: ["Test Answer"] }
+    { type:"First", id:0, question: "Test Question", answers: [{answer: "Test Answer"}] },
+    { type:"First", id:1, question: "Test Question 2", answers: [{answer: "Test 2 Answer"}] }
   ];
-  function emitto (role, data) {
-    for (var group in groupkey) {
-      if (groupkey[group].role === role) {
-        io.to(group).emit('question', data);
-      }
-    }
-  }
   socket.on('generate_question', function (data) {
     if (debug) console.log("Generating Question");
     if (questionnum === 0) {
@@ -159,15 +173,44 @@ io.on('connection', function (socket) {
       }
     }
   });
+  function closevoting() {
+    clearInterval(votetimer);
+    console.log(currentquestion["Hutu"].answers[votedata.indexOf(Math.max.apply( Math, votedata ))]);
+    currentquestion = {};
+    timercount = "Next";
+    emitto("Hutu", "update_timer", "Next");
+    votes = 0;
+    emitto("Hutu", "question", hutuquestions[1]);
+    if (debug) console.log("Hutus finished voting");
+    emitto("Tutsi", "question", tutsiquestions[0]);
+  }
   socket.on('submit', function (data) {
     if (data.role === "Hutu") {
-      if (debug) console.log(data.response.answer);
-      votes++;
       if (debug) console.log("Hutu Voted");
+      if (votes === 0) {
+        votedata = [];
+        timercount = 30;
+        if (debug) console.log("Activated Timer");
+        votetimer = setInterval(function () {
+          timercount--;
+          emitto("Hutu", "update_timer", timercount);
+          if (timercount === 0) {
+            //Close voting if time Expires
+            closevoting();
+            //Recalculate group member numbers
+            getgroupnumbers();
+          }
+        }, 1000);
+      }
+      votes++;
+      if (!votedata[data.response.answer]) {
+        currentquestion["Hutu"].answers.forEach(function (value, index) {
+          votedata[index] = 0;
+        });
+      }
+      votedata[data.response.answer]++;
       if (votes === hutus) {
-        emitto("Hutu", hutuquestions[1]);
-        if (debug) console.log("Hutus finished voting");
-        emitto("Tutsi", tutsiquestions[0]);
+        closevoting();
       }
     } else {
 

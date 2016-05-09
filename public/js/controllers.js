@@ -50,6 +50,9 @@ app.controller("AppCtrl", function ($scope, $rootScope, $state) {
       if (socket) {
         socket.disconnect();
       }
+      if (conn_check) {
+        clearInterval(conn_check);
+      }
       $state.go('people');
     }
   };

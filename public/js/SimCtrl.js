@@ -21,6 +21,7 @@ app.controller("SimCtrl", function ($scope, $state) {
   $scope.question;
   $scope.options = [];
   $scope.groupmembers = [];
+  $scope.timercount = 30;
   $scope.user = {
     group: "",
     name: ""
@@ -78,8 +79,6 @@ app.controller("SimCtrl", function ($scope, $state) {
     if ($state.current.name != "controlpanel") {
       $state.go('simulation.option');
     }
-    socket.emit('generate_question', { role: $scope.role });
-    console.log("Asking For Question");
   });
   socket.on('question', function (question) {
     console.log(question);
@@ -88,10 +87,15 @@ app.controller("SimCtrl", function ($scope, $state) {
     $scope.$apply();
   });
   socket.on('waiting', function (message) {
+    console.log("Waiting");
     $scope.question = message;
     $scope.options = [];
     $scope.$apply();
   });
+  socket.on('update_timer', function (time) {
+    $scope.timercount = time;
+    $scope.$apply();
+  })
   $scope.select = function ($index) {
     console.log($index);
     socket.emit('submit', { role: $scope.role, groupid: $scope.groupid, response: { questionid: $scope.question.id, answer: $index } });
