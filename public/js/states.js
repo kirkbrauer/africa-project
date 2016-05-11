@@ -75,6 +75,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
         .state('politics.usrelations', {
             keeptabs: true,
+            tabs: [
+              {name: "U.S. Relations", state: "politics.usrelations"},
+              {name: "Soviet Relations", state: "politics.sovietrelations"},
+              {name: "Rivalry", state: "politics.rivalry"},
+              {name: "Joseph Mobutu", state: "politics.coloneljoseph"}
+            ],
             name: "US Relations",
             url: '/usrelations',
             templateUrl: '/public/templates/usrelations.html'
