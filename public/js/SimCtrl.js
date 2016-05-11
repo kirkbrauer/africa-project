@@ -1,6 +1,6 @@
 app.controller("SimCtrl", function ($scope, $state) {
-  socket = io('https://africa-project.herokuapp.com');
-  //socket = io('http://localhost:8080');
+  //socket = io('https://africa-project.herokuapp.com');
+  socket = io('http://localhost:8080');
   socket.on('connect', function () {
     console.log("Connected to server");
     sessionid = socket.io.engine.id;
@@ -22,6 +22,9 @@ app.controller("SimCtrl", function ($scope, $state) {
   $scope.options = [];
   $scope.groupmembers = [];
   $scope.timercount = 30;
+  $scope.show_timer = false;
+  $scope.entername = false;
+  $scope.deadmessage = "";
   $scope.user = {
     group: "",
     name: ""
@@ -33,8 +36,13 @@ app.controller("SimCtrl", function ($scope, $state) {
     }
     $state.go($state.current.nextstate);
   };
+  $scope.enternamebtn = function () {
+    $scope.entername = true;
+    $("#name-input").focus();
+  };
   $scope.startsim = function (user) {
     console.log(user.group);
+    $scope.show_timer = true;
     if (!user.group) {
       alert("You must enter a group number")
     } else {
@@ -95,12 +103,26 @@ app.controller("SimCtrl", function ($scope, $state) {
   socket.on('update_timer', function (time) {
     $scope.timercount = time;
     $scope.$apply();
-  })
+  });
+  socket.on('Dead', function (message) {
+    console.log("Died");
+    $state.go("simulation.dead");
+    $scope.deadmessage = message;
+    $scope.$apply();
+  });
+  socket.on('Survived', function (message) {
+    console.log("Survived");
+    $scope.question = message;
+    $scope.options = [];
+    $scope.$apply();
+  });
   $scope.select = function ($index) {
     console.log($index);
     socket.emit('submit', { role: $scope.role, groupid: $scope.groupid, response: { questionid: $scope.question.id, answer: $index } });
-    $scope.question.question = "Waiting for response...";
-    $scope.options = [];
+    if ($scope.role === "Hutu") {
+      $scope.question.question = "Waiting for response...";
+      $scope.options = [];
+    }
   };
   //Code for Control Panel page
   $scope.ctrlp = {};

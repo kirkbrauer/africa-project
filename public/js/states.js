@@ -42,30 +42,46 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
         .state('politics', {
             url: '/politics',
+            tabs: [
+              {name: "U.S. Relations", state: "politics.usrelations"},
+              {name: "Soviet Relations", state: "politics.sovietrelations"},
+              {name: "Rivalry", state: "politics.rivalry"},
+              {name: "Joseph Mobutu", state: "politics.coloneljoseph"}
+            ],
+            controller: "TabCtrl",
             templateUrl: '/public/templates/politics.html'
         })
 
         .state('politics.sovietrelations', {
+            keeptabs: true,
+            name: 'Soviet Relations',
             url: '/sovietrelations',
             templateUrl: '/public/templates/sovietrelations.html'
         })
 
         .state('politics.rivalry', {
+            keeptabs: true,
+            name: "Rivalry",
             url: '/rivalry',
             templateUrl: '/public/templates/rivalry.html'
         })
 
         .state('politics.coloneljoseph', {
+            keeptabs: true,
+            name: "Colonel Joseph",
             url: '/coloneljoseph',
             templateUrl: '/public/templates/coloneljoseph.html'
         })
 
         .state('politics.usrelations', {
+            keeptabs: true,
+            name: "US Relations",
             url: '/usrelations',
-            templateUrl: '/public/templates/politics.html'
+            templateUrl: '/public/templates/usrelations.html'
         })
 
         .state('revolutioninafrica', {
+            name: "Revolution In Africa",
             url: '/revolutioninafrican Africa',
             templateUrl: '/public/templates/revolutioninafrica.html'
         })

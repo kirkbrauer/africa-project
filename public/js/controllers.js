@@ -26,7 +26,7 @@ app.controller("AppCtrl", function ($scope, $rootScope, $state) {
     {name: "Africa's Economy", page: "africaseconomy"},
     {name: "Pan-  Africanism", page: "panafricanism"},
     {name: "Violence in Africa", page: "violence"},
-    {name: "Cold War Politics", page: "politics"},
+    {name: "Cold War Politics", page: "politics.usrelations"},
     {name: "Revolution in Africa", page: "revolution"}
   ];
   $scope.simstatus = "Start Simulation";
@@ -56,4 +56,16 @@ app.controller("AppCtrl", function ($scope, $rootScope, $state) {
       $state.go('people');
     }
   };
+})
+.controller("TabCtrl", function ($scope, $state, $rootScope) {
+  $scope.tabs = $state.current.tabs;
+  $scope.opentab = function ($index) {
+    $state.go($scope.tabs[$index].state);
+  };
+  $rootScope.$on('$stateChangeStart',
+  function(event, toState, toParams, fromState, fromParams, options){
+    if (!toState.keeptabs) {
+      $scope.tabs = toState.tabs;
+    }
+  });
 });

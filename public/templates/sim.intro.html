@@ -1,13 +1,8 @@
-<p>
-  Enter group number below:
-</p>
-<form ng-submit="startsim(user)">
-  Group Number: <input style="color:black;margin-top: 12px;display: block;" ng-model="user.group"/>
-  Name :<input style="color:black;margin-top: 12px;display: block;" ng-model="user.name"/>
+<form ng-submit="enternamebtn()" ng-hide="entername">
+  Group Number: <input style="color:black;margin-top: 12px;display: block;" ng-model="user.group" autofocus/>
   <input type="submit" style="display:none"/>
-  <div class="rounded-button" style="width:100px;margin-top:12px;display:block;">
-    <div class="display" style="margin-top:0;">
-      Start
-    </div>
-  </div>
+</form>
+<form ng-submit="startsim(user)" ng-show="entername">
+  Name :<input style="color:black;margin-top: 12px;display: block;" id="name-input" ng-model="user.name"/>
+  <input type="submit" style="display:none"/>
 </form>
