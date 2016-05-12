@@ -24,10 +24,11 @@ app.controller("AppCtrl", function ($scope, $rootScope, $state) {
     {name: "Decolonization in Africa", page: "decolonization"},
     {name: "What is Desertification", page: "desertification"},
     {name: "Africa's Economy", page: "africaseconomy"},
+    {name: "AIDS and HIV in Africa", page: "aidsandhiv.connection"},
     {name: "Pan-  Africanism", page: "panafricanism"},
-    {name: "Violence in Africa", page: "violence"},
+    {name: "Violence in Africa", page: "violence.intro"},
     {name: "Cold War Politics", page: "politics.usrelations"},
-    {name: "Revolution in Africa", page: "revolution"}
+    {name: "Revolution in Africa", page: "revolution.angola"}
   ];
   $scope.simstatus = "Start Simulation";
   $scope.openpage = function ($index) {

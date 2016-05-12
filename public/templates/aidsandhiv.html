@@ -1,0 +1,14 @@
+<div style="position:absolute;top:9%;left:20%;z-index:3;max-width:500px">
+  <h2>AIDS and HIV in Africa</h2>
+  <p>
+    AIDS is a disease in which there is a severe loss of the body's cellular immunity, greatly lowering the resistance to infection. AIDS is the disease that results from untreated HIV in the body’s immune system. There are currently over 25 million people who are HIV positive in the world.
+  </p>
+  <div class="row">
+    <div class="rounded-button" ng-click="opentab($index)" ng-repeat="tab in tabs" style="margin-top:0px;">
+      <div class="display">
+        {{tab.name}}
+      </div>
+    </div>
+  </div>
+  <div ui-view></div>
+</div>

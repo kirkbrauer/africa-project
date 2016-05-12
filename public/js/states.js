@@ -30,9 +30,34 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: '/public/templates/africaseconomy.html'
         })
 
-        .state('violence', {
-            url: '/violence',
-            templateUrl: '/public/templates/violence.html'
+        .state('aidsandhiv', {
+            url: '/aidsandhiv',
+            tabs: [
+              {name: "Connection", state: "aidsandhiv.connection"},
+              {name: "Effects", state: "aidsandhiv.effects"}
+            ],
+            controller: "TabCtrl",
+            templateUrl: '/public/templates/aidsandhiv.html'
+        })
+
+        .state('aidsandhiv.connection', {
+            keeptabs: true,
+            url: '/connection',
+            tabs: [
+              {name: "Connection", state: "aidsandhiv.connection"},
+              {name: "Effects", state: "aidsandhiv.effects"}
+            ],
+            name: "Aids and HIV Connection",
+            controller: "TabCtrl",
+            templateUrl: '/public/templates/aidsandhiv.connection.html'
+        })
+
+        .state('aidsandhiv.effects', {
+            keeptabs: true,
+            url: '/effects',
+            name: "Effects",
+            controller: "TabCtrl",
+            templateUrl: '/public/templates/aidsandhiv.effects.html'
         })
 
         .state('panafricanism', {
@@ -157,6 +182,89 @@ app.config(function($stateProvider, $urlRouterProvider) {
           name: 'end',
           url: '/sim-end',
           templateUrl: '/public/templates/sim.end.html'
+        })
+
+        .state('revolution', {
+            url: '/revolution',
+            tabs: [
+              {name: "Angola", state: "revolution.angola"},
+              {name: "Rhodesia", state: "revolution.rhodesia"},
+              {name: "Gold Coast", state: "revolution.gold-coast"},
+            ],
+            controller: "TabCtrl",
+            templateUrl: '/public/templates/revolutioninafrica.html'
+        })
+
+        .state('revolution.angola', {
+            keeptabs: true,
+            tabs: [
+              {name: "Angola", state: "revolution.angola"},
+              {name: "Rhodesia", state: "revolution.rhodesia"},
+              {name: "Gold Coast", state: "revolution.gold-coast"},
+            ],
+            name: "Angola",
+            url: '/angola',
+            templateUrl: '/public/templates/revolution.angola.html'
+        })
+
+        .state('revolution.rhodesia', {
+            keeptabs: true,
+            name: "Rhodesia",
+            url: '/rhodesia',
+            templateUrl: '/public/templates/revolution.rhodesia.html'
+        })
+
+        .state('revolution.gold-coast', {
+            keeptabs: true,
+            name: "Gold Coast",
+            url: '/gold-coast',
+            templateUrl: '/public/templates/revolution.gold-coast.html'
+        })
+
+        .state('violence', {
+            url: '/violence',
+            tabs: [
+              {name: "Intro", state: "violence.intro"},
+              {name: "Nigeria", state: "violence.nigeria"},
+              {name: "Apartheid", state: "violence.apartheid"},
+              {name: "Nelson Mandela", state: "violence.mandela"},
+            ],
+            controller: "TabCtrl",
+            templateUrl: '/public/templates/violence.html'
+        })
+
+        .state('violence.intro', {
+            keeptabs: true,
+            tabs: [
+              {name: "Intro", state: "violence.intro"},
+              {name: "Nigeria", state: "violence.nigeria"},
+              {name: "Apartheid", state: "violence.apartheid"},
+              {name: "Nelson Mandela", state: "violence.mandela"},
+            ],
+            name: "Intro",
+            url: '/intro',
+            templateUrl: '/public/templates/violence.intro.html'
+        })
+
+        .state('violence.nigeria', {
+            keeptabs: true,
+            name: "Nigeria",
+            url: '/nigeria',
+            templateUrl: '/public/templates/violence.nigeria.html'
+        })
+
+        .state('violence.mandela', {
+            keeptabs: true,
+            name: "Nelson Mandela",
+            url: '/mandela',
+            templateUrl: '/public/templates/violence.mandela.html'
+        })
+
+        .state('violence.apartheid', {
+            keeptabs: true,
+            name: "Apartheid",
+            url: '/apartheid',
+            templateUrl: '/public/templates/violence.apartheid.html'
         })
 
 })
