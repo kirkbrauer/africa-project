@@ -27,6 +27,7 @@ var votetimer;
 var votedata = [];
 var timercount = 30;
 var currentquestion = {};
+var nexthutuquestion = 0;
 
 function stringGen(len) {
     var text = "";
@@ -112,6 +113,8 @@ io.on('connection', function (socket) {
     //Set the current question
     if (role === "Hutu" && message === "question") {
       currentquestion["Hutu"] = data;
+    } else if (role === "Tutsi" && message === "question") {
+      currentquestion["Tutsi"] = data;
     }
     for (var group in groupkey) {
       if (groupkey[group].role === role) {
@@ -148,41 +151,44 @@ io.on('connection', function (socket) {
       if (debug) console.log("Tutsis "+tutsis);
       if (debug) console.log("Hutus "+hutus);
       socket.broadcast.emit('startsim');
-      emitto("Hutu", "question", hutuquestions[0]);
       emitto("Tutsi", "question", waiting);
+      emitto("Hutu", "question", hutuquestions[0]);
       questionnum = 0;
     } else {
       socket.emit('notready');
     }
   });
-  var hutuquestions = [
-    { type: "First", id:0, question: "Your people have deemed the Tutsis the cause of all problems in Rwanda. How would you like to exterminate them?", answers: [{answer: "Hire militas to storm peoples houses and murder them", send: 0}, {answer: "Have militias set up roadblocks and kill them with machetes", send: 1}] },
-    { type: "First", id:1, question: "Second Question!", answers: ["Hire militas to storm peoples houses and murder them","Have militias set up roadblocks and kill them with machetes"] }
-  ];
-  var tutsiquestions = [
-    { type:"First", id:0, question: "Test Question", answers: [{answer: "Test Answer"}] },
-    { type:"First", id:1, question: "Test Question 2", answers: [{answer: "Test 2 Answer"}] }
-  ];
-  socket.on('generate_question', function (data) {
-    if (debug) console.log("Generating Question");
-    if (questionnum === 0) {
-      if (data.role == "Hutu") {
-        socket.emit('question', hutuquestions[0]);
-      } else {
-        socket.emit('waiting', "Waiting for Hutu Response...");
+  var hutuquestions = require("./questions.js").hutuquestions;
+  var tutsiquestions = require("./questions.js").tutsiquestions;
+  function setupvoting(role) {
+    votetimer = setInterval(function () {
+      timercount--;
+      emitto(role, "update_timer", timercount);
+      if (timercount === 0) {
+        //Close voting if time Expires
+        closevoting(role);
+        //Recalculate group member numbers
+        getgroupnumbers();
       }
-    }
-  });
-  function closevoting() {
+    }, 1000);
+  }
+  function closevoting(role) {
+    //Reset all variables
     clearInterval(votetimer);
-    console.log(currentquestion["Hutu"].answers[votedata.indexOf(Math.max.apply( Math, votedata ))]);
-    currentquestion = {};
-    timercount = "Next";
-    emitto("Hutu", "update_timer", "Next");
     votes = 0;
-    emitto("Hutu", "question", hutuquestions[1]);
-    if (debug) console.log("Hutus finished voting");
-    emitto("Tutsi", "question", tutsiquestions[0]);
+    timercount = "Next";
+    if (role === "Hutu") {
+      var tutsiquestion = currentquestion["Hutu"].answers[votedata.indexOf(Math.max.apply( Math, votedata ))].send;
+      nexthutuquestion = currentquestion["Hutu"].id+1;
+      currentquestion = {};
+      emitto("Hutu", "update_timer", "Next");
+      if (debug) console.log("Hutus finished voting");
+      //Send the correct question to the tutsis
+      emitto("Tutsi", "question", tutsiquestions[tutsiquestion]);
+    } else {
+      emitto("Hutu", "question", hutuquestions[nexthutuquestion]);
+      //emitto("Tutsi", "waiting", "Waiting for Hutu Response...");
+    }
   }
   socket.on('submit', function (data) {
     if (data.role === "Hutu") {
@@ -190,17 +196,9 @@ io.on('connection', function (socket) {
       if (votes === 0) {
         votedata = [];
         timercount = 30;
+        setupvoting("Hutu");
         if (debug) console.log("Activated Timer");
-        votetimer = setInterval(function () {
-          timercount--;
-          emitto("Hutu", "update_timer", timercount);
-          if (timercount === 0) {
-            //Close voting if time Expires
-            closevoting();
-            //Recalculate group member numbers
-            getgroupnumbers();
-          }
-        }, 1000);
+
       }
       votes++;
       if (!votedata[data.response.answer]) {
@@ -210,10 +208,20 @@ io.on('connection', function (socket) {
       }
       votedata[data.response.answer]++;
       if (votes === hutus) {
-        closevoting();
+        closevoting("Hutu");
       }
     } else {
-
+      //Code for tutsi submits
+      timercount = 30;
+      if (votes === 0) {
+        setupvoting("Tutsi");
+      }
+      votes++
+      socket.emit(currentquestion["Tutsi"].answers[data.response.answer].send, currentquestion["Tutsi"].answers[data.response.answer].message);
+      console.log(currentquestion["Tutsi"].answers[data.response.answer].message);
+      if (votes === tutsis) {
+        closevoting("Tutsi");
+      }
     }
   })
 });

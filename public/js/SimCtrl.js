@@ -1,6 +1,6 @@
 app.controller("SimCtrl", function ($scope, $state) {
-  //socket = io('https://africa-project.herokuapp.com');
-  socket = io('http://localhost:8080');
+  socket = io('https://africa-project.herokuapp.com');
+  //socket = io('http://localhost:8080');
   socket.on('connect', function () {
     console.log("Connected to server");
     sessionid = socket.io.engine.id;
@@ -18,7 +18,7 @@ app.controller("SimCtrl", function ($scope, $state) {
   $scope.alive = true;
   $scope.role;
   $scope.groupid;
-  $scope.question;
+  $scope.question = "";
   $scope.options = [];
   $scope.groupmembers = [];
   $scope.timercount = 30;
@@ -96,7 +96,7 @@ app.controller("SimCtrl", function ($scope, $state) {
   });
   socket.on('waiting', function (message) {
     console.log("Waiting");
-    $scope.question = message;
+    $scope.question.question = message;
     $scope.options = [];
     $scope.$apply();
   });
@@ -112,7 +112,8 @@ app.controller("SimCtrl", function ($scope, $state) {
   });
   socket.on('Survived', function (message) {
     console.log("Survived");
-    $scope.question = message;
+    console.log(message);
+    $scope.question.question = message;
     $scope.options = [];
     $scope.$apply();
   });
