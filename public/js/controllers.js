@@ -17,7 +17,7 @@ app.controller("AppCtrl", function ($scope, $rootScope, $state) {
   });
 })
 
-.controller("NavCtrl", function ($scope, $state) {
+.controller("NavCtrl", function ($scope, $state, $rootScope) {
   $scope.buttons = [
     {name: "African People", page: "people"},
     {name: "Africa's Colonization", page: "colonization"},
@@ -31,15 +31,24 @@ app.controller("AppCtrl", function ($scope, $rootScope, $state) {
     {name: "Revolution in Africa", page: "revolution.angola"}
   ];
   $scope.simstatus = "Start Simulation";
+  $scope.simstat = false;
   $scope.openpage = function ($index) {
     $state.go($scope.buttons[$index].page)
   };
+  $rootScope.$on("hidenav", function () {
+    $scope.simstat = true;
+  });
+  $rootScope.$on("shownav", function () {
+    $scope.simstat = false;
+  });
   $scope.togglesim = function () {
     if ($scope.simstatus === "Start Simulation") {
       $scope.simstatus = "Stop Simulation";
+      $rootScope.$broadcast("hidenav");
       $state.go('simulation.background');
     } else {
       $scope.simstatus = "Start Simulation";
+      $rootScope.$broadcast("shownav");
       $scope.alive = true;
       $scope.role;
       $scope.groupid;
