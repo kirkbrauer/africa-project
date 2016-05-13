@@ -186,7 +186,12 @@ io.on('connection', function (socket) {
       //Send the correct question to the tutsis
       emitto("Tutsi", "question", tutsiquestions[tutsiquestion]);
     } else {
-      emitto("Hutu", "question", hutuquestions[nexthutuquestion]);
+      if (nexthutuquestion === 5) {
+        emitto("Tutsi", "end_sim", {});
+        emitto("Hutu", "end_sim", {});
+      } else {
+        emitto("Hutu", "question", hutuquestions[nexthutuquestion]);
+      }
       //emitto("Tutsi", "waiting", "Waiting for Hutu Response...");
     }
   }
