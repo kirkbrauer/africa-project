@@ -187,6 +187,7 @@ io.on('connection', function (socket) {
       emitto("Tutsi", "question", tutsiquestions[tutsiquestion]);
     } else {
       if (nexthutuquestion === 5) {
+        console.log("Simulation End");
         emitto("Tutsi", "end_sim", {});
         emitto("Hutu", "end_sim", {});
       } else {
@@ -223,7 +224,6 @@ io.on('connection', function (socket) {
       }
       votes++
       socket.emit(currentquestion["Tutsi"].answers[data.response.answer].send, currentquestion["Tutsi"].answers[data.response.answer].message);
-      console.log(currentquestion["Tutsi"].answers[data.response.answer].message);
       if (votes === tutsis) {
         closevoting("Tutsi");
       }

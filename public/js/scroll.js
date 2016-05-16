@@ -48,13 +48,12 @@ new $.ScrollMagic.Scene({
         offset: 0,
       })
       .setPin("#map-wrapper", {pushFollowers: false})
-      .addIndicators("Pin")
       .addTo(controller); // assign the scene to the controller
 
 new $.ScrollMagic.Scene({ duration: 100,offset: 25
       })
       .setTween(".title", {opacity: 0})
-      .addIndicators()
+
       .addTo(controller); // assign the scene to the controller
 
 var fadetitle = new TimelineMax()
@@ -64,7 +63,7 @@ var fadetitle = new TimelineMax()
 new $.ScrollMagic.Scene({ duration: 100,offset: 125
       })
       .setTween(fadetitle)
-      .addIndicators()
+
       .addTo(controller); // assign the scene to the controller
 
 var fadetitle_1 = new TimelineMax()
@@ -74,7 +73,7 @@ var fadetitle_1 = new TimelineMax()
 new $.ScrollMagic.Scene({ duration: 100,offset: 225
       })
       .setTween(fadetitle_1)
-      .addIndicators()
+
       .addTo(controller); // assign the scene to the controller
 
 var fadetitle_2 = new TimelineMax()
@@ -84,7 +83,7 @@ var fadetitle_2 = new TimelineMax()
 new $.ScrollMagic.Scene({ duration: 100,offset: 325
       })
       .setTween(fadetitle_2)
-      .addIndicators()
+
       .addTo(controller); // assign the scene to the controller
 
 new $.ScrollMagic.Scene({
@@ -99,7 +98,7 @@ new $.ScrollMagic.Scene({
           scrolllock = true;
         }
       })
-      .addIndicators()
+
       .addTo(controller); // assign the scene to the controller
 
 new $.ScrollMagic.Scene({
@@ -108,7 +107,7 @@ new $.ScrollMagic.Scene({
       reverse: true
     })
     .setTween(show_content)
-    .addIndicators()
+
     .addTo(controller); // assign the scene to the controller
 
     new $.ScrollMagic.Scene({
@@ -117,5 +116,5 @@ new $.ScrollMagic.Scene({
           reverse: true
         })
         .setTween(".navbar", {opacity: 1})
-        .addIndicators()
+
         .addTo(controller); // assign the scene to the controller

@@ -1,6 +1,6 @@
 app.controller("SimCtrl", function ($scope, $state) {
-  socket = io('https://africa-project.herokuapp.com');
-  //socket = io('http://localhost:8080');
+  //socket = io('https://africa-project.herokuapp.com');
+  socket = io('http://localhost:8080');
   socket.on('connect', function () {
     console.log("Connected to server");
     sessionid = socket.io.engine.id;
@@ -117,8 +117,8 @@ app.controller("SimCtrl", function ($scope, $state) {
     $scope.options = [];
     $scope.$apply();
   });
-  socket.on('sim_end', function () {
-    console.log("End");
+  socket.on('end_sim', function () {
+    console.log("End Simulation");
     $state.go('simulation.end');
   });
   $scope.select = function ($index) {
