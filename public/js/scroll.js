@@ -23,7 +23,7 @@ var hide_content = new TimelineMax()
 
 var show_content = new TimelineMax()
   .to("#view-container", 1 , {opacity: 1})
-  .to("#map-wrapper", 1 , {opacity: 0.5});
+  .to("#map-wrapper", 1 , {opacity: 0.7});
 
 //Controller for scroll locking
 scrolllock = false;
@@ -87,11 +87,11 @@ new $.ScrollMagic.Scene({ duration: 100,offset: 325
       .addTo(controller); // assign the scene to the controller
 
 new $.ScrollMagic.Scene({
-        duration: 300,  // the scene should last for a scroll distance of 100px
-        offset: 250,
+        duration: 400,  // the scene should last for a scroll distance of 100px
+        offset: 150,
         reverse: true
       })
-      .setTween(".map", {scale: 2.5, left: -500, top: 250, ease: Expo.easeIn})
+      .setTween(".map", {scale: 7, left: -100, top: 250, ease: Expo.easeIn})
       .on('leave', function (event) {
         if (event.state === "AFTER") {
           console.log("end");
@@ -102,8 +102,8 @@ new $.ScrollMagic.Scene({
       .addTo(controller); // assign the scene to the controller
 
 new $.ScrollMagic.Scene({
-      duration: 10,  // the scene should last for a scroll distance of 100px
-      offset: 540,
+      duration: 100,  // the scene should last for a scroll distance of 100px
+      offset: 500,
       reverse: true
     })
     .setTween(show_content)
@@ -111,8 +111,8 @@ new $.ScrollMagic.Scene({
     .addTo(controller); // assign the scene to the controller
 
     new $.ScrollMagic.Scene({
-          duration: 10,  // the scene should last for a scroll distance of 100px
-          offset: 540,
+          duration: 100,  // the scene should last for a scroll distance of 100px
+          offset: 500,
           reverse: true
         })
         .setTween(".navbar", {opacity: 1})
