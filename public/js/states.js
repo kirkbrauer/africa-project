@@ -10,6 +10,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: '/public/templates/people.html'
         })
 
+        .state('sources', {
+            url: '/sources',
+            templateUrl: '/public/templates/sources.html'
+        })
+
         .state('colonization', {
             url: '/colonization',
             templateUrl: '/public/templates/colonization.html'

@@ -28,7 +28,8 @@ app.controller("AppCtrl", function ($scope, $rootScope, $state) {
     {name: "Pan-  Africanism", page: "panafricanism"},
     {name: "Violence in Africa", page: "violence.intro"},
     {name: "Cold War Politics", page: "politics.usrelations"},
-    {name: "Revolution in Africa", page: "revolution.angola"}
+    {name: "Revolution in Africa", page: "revolution.angola"},
+    {name: "Sources for Content", page: "sources"}
   ];
   $scope.simstatus = "Start Simulation";
   $scope.simstat = false;
