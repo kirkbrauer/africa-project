@@ -96,12 +96,16 @@ io.on('connection', function (socket) {
     if (debug) console.log(data.groupid + " Ready");
     if (groupkey[data.groupid].ready === false) {
       groupkey[data.groupid].ready = true;
-      if (!data.groupid.includes(":Tutsi") && !data.groupid.includes(":Hutu")) {
-        var role = chooseSide();
+      if (!data.groupid.toLowerCase().includes(":tutsi") && !data.groupid.toLowerCase().includes(":hutu")) {
+        if (data.groupid <= 3) {
+          var role = "Hutu";
+        } else {
+          var role = "Tutsi";
+        }
       } else {
-        if (data.groupid.includes(":Tutsi")) {
+        if (data.groupid.toLowerCase().includes(":tutsi")) {
           var role = "Tutsi"
-        } else if (data.groupid.includes(":Hutu")) {
+        } else if (data.groupid.toLowerCase().includes(":hutu")) {
           var role = "Hutu";
         }
       }
