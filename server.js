@@ -191,7 +191,13 @@ io.on('connection', function (socket) {
         emitto("Tutsi", "end_sim", {});
         emitto("Hutu", "end_sim", {});
       } else {
-        emitto("Hutu", "question", hutuquestions[nexthutuquestion]);
+        if (tutsis === 0) {
+          console.log("Simulation End");
+          emitto("Tutsi", "end_sim", {});
+          emitto("Hutu", "end_sim", {});
+        } else {
+          emitto("Hutu", "question", hutuquestions[nexthutuquestion]);
+        }
       }
       //emitto("Tutsi", "waiting", "Waiting for Hutu Response...");
     }
@@ -224,6 +230,11 @@ io.on('connection', function (socket) {
       }
       votes++
       socket.emit(currentquestion["Tutsi"].answers[data.response.answer].send, currentquestion["Tutsi"].answers[data.response.answer].message);
+      if (currentquestion["Tutsi"].answers[data.response.answer].send === "Dead") {
+        console.log("Died");
+        tutsis--;
+        votes--;
+      }
       if (votes === tutsis) {
         closevoting("Tutsi");
       }

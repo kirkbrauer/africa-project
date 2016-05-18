@@ -9,9 +9,7 @@ app.controller("SimCtrl", function ($scope, $state) {
       socket.emit('conn_check', { data: 'test' });
     }, 1000);
   });
-  socket.on('conn_check', function (data) {
-    console.log("Checked");
-  });
+  socket.on('conn_check', function (data) {});
   socket.on('connect_error', function () {
     //alert("Error connecting to the server");
   });
