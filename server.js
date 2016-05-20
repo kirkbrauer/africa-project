@@ -190,7 +190,7 @@ io.on('connection', function (socket) {
       //Send the correct question to the tutsis
       emitto("Tutsi", "question", tutsiquestions[tutsiquestion]);
     } else {
-      if (nexthutuquestion === 5) {
+      if (nexthutuquestion === 6) {
         console.log("Simulation End");
         emitto("Tutsi", "end_sim", {});
         emitto("Hutu", "end_sim", {});
